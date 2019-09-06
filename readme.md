@@ -1,4 +1,20 @@
-![JOT Contact Directory Application ](jot-logo.png)
+<p align="center">
+  <img src="https://github.com/ImtiazEpu/SPA-With-Laravel-API-Vue.js/blob/dev/jot-logo.png" alt="jot">
+</p>
+<p align="center">
+  <a href="https://laravel.com">
+    <img src="https://img.shields.io/badge/laravel-5.8-red.svg" alt="vue">
+  </a>
+  <a href="https://github.com/vuejs/vue">
+    <img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue">
+  </a>
+  <a href="https://github.com/ElemeFE/element">
+    <img src="https://img.shields.io/badge/element--ui-2.11.1-brightgreen.svg" alt="element-ui">
+  </a>
+  <a href="https://github.com/tuandm/laravue/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="license">
+  </a>
+</p>
 
 ## JOT Contact Directory Application
 
