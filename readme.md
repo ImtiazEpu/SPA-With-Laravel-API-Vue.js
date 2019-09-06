@@ -1,4 +1,4 @@
-### ![JOT Contact Directory Application ](jot-logo.svg)
+![JOT Contact Directory Application ](jot-logo.png)
 
 ## JOT Contact Directory Application
 
