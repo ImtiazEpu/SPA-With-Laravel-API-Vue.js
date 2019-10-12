@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Contact;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class ContactsController extends Controller
@@ -17,5 +17,10 @@ class ContactsController extends Controller
             'company' => 'required',
         ]);
         Contact::create($data);
+    }
+
+    public function show(Contact $contact)
+    {
+        return $contact;
     }
 }
