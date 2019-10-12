@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -65,9 +65,9 @@ return array(
 
     'include_helpers' => true,
 
-    'helper_files' => array(
+    'helper_files' => [
         base_path().'/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -79,9 +79,9 @@ return array(
     |
     */
 
-    'model_locations' => array(
-        'app',
-    ),
+    'model_locations' => [
+        'app/Models',
+    ],
 
 
     /*
@@ -93,12 +93,12 @@ return array(
     |
     */
 
-    'extra' => array(
-        'Eloquent' => array('Illuminate\Database\Eloquent\Builder', 'Illuminate\Database\Query\Builder'),
-        'Session' => array('Illuminate\Session\Store'),
-    ),
+    'extra' => [
+        'Eloquent' => ['Illuminate\Database\Eloquent\Builder', 'Illuminate\Database\Query\Builder'],
+        'Session' => ['Illuminate\Session\Store'],
+    ],
 
-    'magic' => array(),
+    'magic' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -110,9 +110,9 @@ return array(
     |
     */
 
-    'interfaces' => array(
+    'interfaces' => [
 
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -140,9 +140,9 @@ return array(
     |  ),
     |
     */
-    'custom_db_types' => array(
+    'custom_db_types' => [
 
-    ),
+    ],
 
     /*
      |--------------------------------------------------------------------------
@@ -178,10 +178,10 @@ return array(
     | Cast the given "real type" to the given "type".
     |
     */
-    'type_overrides' => array(
+    'type_overrides' => [
         'integer' => 'int',
         'boolean' => 'bool',
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -194,4 +194,4 @@ return array(
     */
     'include_class_docblocks' => false,
 
-);
+];

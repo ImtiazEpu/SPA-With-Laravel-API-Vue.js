@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
+use App\Models\Contact;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
