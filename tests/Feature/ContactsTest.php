@@ -60,6 +60,21 @@ class ContactsTest extends TestCase
         $this->assertEquals('03-22-1987', Contact::first()->birthday->format('m-d-Y'));
     }
 
+    /** @test */
+    public function a_contact_can_be_retrieved()
+    {
+        $contact = factory(Contact::class)->create();
+        $response = $this->get('/api/contacts/' . $contact->id);
+
+        $response->assertJson([
+            'name'=> $contact->name,
+            'phone'=> $contact->phone,
+            'email'=> $contact->email,
+            'birthday'=> $contact->birthday,
+            'company'=> $contact->company,
+        ]);
+    }
+
     private function data()
     {
         return [
