@@ -22,10 +22,17 @@
 ## JOT Contact Directory Application
 
 JOT contact directory is an open source directory single-page application using Laravel & vue.js .
+## Inside
+ * Vue
+ * Vue Router
+ * Axios
+ * Tailwind CSS
+ 
 ## Packages Used
 - [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 - [Laravel IDE helper for PhpStorm](https://github.com/barryvdh/laravel-ide-helper)
 - [Doctrine Database Abstraction Layer](https://github.com/doctrine/dbal)
+- [laravel/ui](https://laravel.com/docs/6.0/frontend)
 
 ## Installation instruction
 
