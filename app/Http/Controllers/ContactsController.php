@@ -24,6 +24,14 @@ class ContactsController extends Controller
     }
 
     /**
+     *
+     */
+    public function index()
+    {
+        return \request()->user()->contacts;
+    }
+
+    /**
      * Data Store
      */
     public function store()
@@ -52,6 +60,10 @@ class ContactsController extends Controller
         $contact->update($this->validateData());
     }
 
+    /**
+     * @param Contact $contact
+     * @throws \Exception
+     */
     public function destroy(Contact $contact)
     {
         $contact->delete();
