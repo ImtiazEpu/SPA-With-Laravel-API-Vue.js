@@ -9,6 +9,7 @@ class ContactsController extends Controller
 {
     /**
      * Data validation
+     *
      * @return mixed
      */
     private function validateData()

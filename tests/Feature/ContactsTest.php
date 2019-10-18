@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Contact;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -10,11 +11,27 @@ use Tests\TestCase;
 class ContactsTest extends TestCase
 {
     use RefreshDatabase;
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = factory(User::class)->create();
+    }
 
     /** @test */
-    public function a_contact_a_can_be_added()
+    public function an_unauthenticated_user_should_redirected_to_login()
+    {
+        $respons = $this->post('/api/contacts', array_merge($this->data(), ['api_token' => '']));
+        $respons->assertRedirect('/login');
+        $this->assertCount(0, Contact::all());
+    }
+
+    /** @test */
+    public function an_unauthenticated_user_can_add_a_contact()
     {
         $this->post('/api/contacts', $this->data());
+
         $contact = Contact::first();
 
         $this->assertEquals('Test Name', $contact->name);
@@ -64,7 +81,7 @@ class ContactsTest extends TestCase
     public function a_contact_can_be_retrieved()
     {
         $contact = factory(Contact::class)->create();
-        $response = $this->get('/api/contacts/' . $contact->id);
+        $response = $this->get('/api/contacts/' . $contact->id . '?api_token=' . $this->user->api_token);
 
         $response->assertJson([
             'name' => $contact->name,
@@ -94,7 +111,7 @@ class ContactsTest extends TestCase
     public function a_contact_can_be_deleted()
     {
         $contact = factory(Contact::class)->create();
-        $response = $this->delete('/api/contacts/' . $contact->id);
+        $response = $this->delete('/api/contacts/' . $contact->id, ['api_token' => $this->user->api_token]);
         $this->assertCount(0, Contact::all());
 
     }
@@ -106,7 +123,8 @@ class ContactsTest extends TestCase
             'phone' => '01616567207',
             'email' => 'test@email.com',
             'birthday' => '03/22/1987',
-            'company' => 'ABC String'
+            'company' => 'ABC String',
+            'api_token' => $this->user->api_token
         ];
     }
 }
