@@ -81,8 +81,6 @@ class ContactsTest extends TestCase
     /** @test */
     public function birthdays_are_properly_stored()
     {
-        $this->withoutExceptionHandling();
-
         $response = $this->post('/api/contacts',
             array_merge($this->data()));
 
@@ -120,8 +118,7 @@ class ContactsTest extends TestCase
     /** @test */
     public function a_contact_can_be_patched()
     {
-        $this->withoutExceptionHandling();
-        $contact = factory(Contact::class)->create();
+        $contact = factory(Contact::class)->create(['user_id'=>$this->user->id]);
         $response = $this->patch('/api/contacts/' . $contact->id, $this->data());
         $contact = $contact->fresh();
 
@@ -131,6 +128,15 @@ class ContactsTest extends TestCase
         $this->assertEquals('03/22/1987', $contact->birthday->format('m/d/Y'));
         $this->assertEquals('ABC String', $contact->company);
     }
+
+    /** @test */
+        public function only_the_owner_of_the_contact_can_patch_the_contact(){
+            $contact = factory(Contact::class)->create();
+            $anotherUser = factory(User::class)->create();
+
+            $response = $this->patch('/api/contacts/' . $contact->id, array_merge($this->data(), ['api_token'=>$anotherUser->api_token]));
+            $response->assertStatus(403);
+        }
 
     /** @test */
     public function a_contact_can_be_deleted()

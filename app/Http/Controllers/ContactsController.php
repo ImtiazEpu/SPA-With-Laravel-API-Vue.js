@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ContactsController extends Controller
 {
@@ -36,7 +38,7 @@ class ContactsController extends Controller
      */
     public function store()
     {
-        Contact::create($this->validateData());
+        request()->user()->contacts()->create($this->validateData());
     }
 
     /**
@@ -57,9 +59,13 @@ class ContactsController extends Controller
      * Data Updating
      *
      * @param Contact $contact
+     * @return ResponseFactory|Response
      */
     public function update(Contact $contact)
     {
+        if (\request()->user()->isNot($contact->user)){
+            return response([],403);
+        }
         $contact->update($this->validateData());
     }
 
