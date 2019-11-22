@@ -110,6 +110,7 @@ class ContactsTest extends TestCase
         $contact = factory(Contact::class)->create(['user_id' => $this->user->id]);
 
         $anotherUser = factory(User::class)->create();
+
         $response = $this->get('/api/contacts/' . $contact->id . '?api_token=' . $anotherUser->api_token);
         $response->assertStatus(403);
 

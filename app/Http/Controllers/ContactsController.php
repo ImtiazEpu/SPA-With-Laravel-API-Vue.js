@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class ContactsController extends Controller
 {
@@ -27,17 +25,21 @@ class ContactsController extends Controller
 
     /**
      *
+     * @throws AuthorizationException
      */
     public function index()
     {
-        return \request()->user()->contacts;
+        $this->authorize('viewAny',Contact::class);
+        return request()->user()->contacts;
     }
 
     /**
      * Data Store
+     * @throws AuthorizationException
      */
     public function store()
     {
+        $this->authorize('create',Contact::class);
         request()->user()->contacts()->create($this->validateData());
     }
 
@@ -46,12 +48,11 @@ class ContactsController extends Controller
      *
      * @param Contact $contact
      * @return Contact
+     * @throws AuthorizationException
      */
     public function show(Contact $contact)
     {
-        if (\request()->user()->isNot($contact->user)){
-            return response([],403);
-        }
+        $this->authorize('view', $contact);
         return $contact;
     }
 
@@ -59,26 +60,24 @@ class ContactsController extends Controller
      * Data Updating
      *
      * @param Contact $contact
-     * @return ResponseFactory|Response
+     * @return void
+     * @throws AuthorizationException
      */
     public function update(Contact $contact)
     {
-        if (\request()->user()->isNot($contact->user)){
-            return response([],403);
-        }
+        $this->authorize('update', $contact);
         $contact->update($this->validateData());
     }
 
     /**
      * @param Contact $contact
-     * @return ResponseFactory|Response
+     * @return void
+     * @throws AuthorizationException
      * @throws \Exception
      */
     public function destroy(Contact $contact)
     {
-        if (\request()->user()->isNot($contact->user)){
-            return response([],403);
-        }
+        $this->authorize('delete', $contact);
         $contact->delete();
     }
 }

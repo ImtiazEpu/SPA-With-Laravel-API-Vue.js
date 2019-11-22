@@ -11,6 +11,9 @@ class Contact extends Model
 
     protected $dates = ['birthday'];
 
+    /**
+     * @param $birthday
+     */
     public function setBirthdayAttribute($birthday)
     {
         $this->attributes['birthday'] = Carbon::parse($birthday);
