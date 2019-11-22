@@ -71,10 +71,14 @@ class ContactsController extends Controller
 
     /**
      * @param Contact $contact
+     * @return ResponseFactory|Response
      * @throws \Exception
      */
     public function destroy(Contact $contact)
     {
+        if (\request()->user()->isNot($contact->user)){
+            return response([],403);
+        }
         $contact->delete();
     }
 }
