@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Contact as ContactResource;
 use App\Models\Contact;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -29,8 +30,8 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny',Contact::class);
-        return request()->user()->contacts;
+        $this->authorize('viewAny', Contact::class);
+        return ContactResource::collection(request()->user()->contacts);
     }
 
     /**
@@ -39,7 +40,7 @@ class ContactsController extends Controller
      */
     public function store()
     {
-        $this->authorize('create',Contact::class);
+        $this->authorize('create', Contact::class);
         request()->user()->contacts()->create($this->validateData());
     }
 
@@ -47,13 +48,13 @@ class ContactsController extends Controller
      * Data Showing
      *
      * @param Contact $contact
-     * @return Contact
+     * @return ContactResource
      * @throws AuthorizationException
      */
     public function show(Contact $contact)
     {
         $this->authorize('view', $contact);
-        return $contact;
+        return new ContactResource($contact);
     }
 
     /**
