@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Contact as ContactResource;
 use App\Models\Contact;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ContactsController extends Controller
@@ -69,18 +71,23 @@ class ContactsController extends Controller
      * Data Updating
      *
      * @param Contact $contact
-     * @return void
+     * @return JsonResponse
      * @throws AuthorizationException
      */
     public function update(Contact $contact)
     {
         $this->authorize('update', $contact);
         $contact->update($this->validateData());
+
+        return (new ContactResource($contact))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**
      * @param Contact $contact
-     * @return void
+     *
+     * @return ResponseFactory|\Illuminate\Http\Response
      * @throws AuthorizationException
      * @throws \Exception
      */
@@ -88,5 +95,7 @@ class ContactsController extends Controller
     {
         $this->authorize('delete', $contact);
         $contact->delete();
+
+        return response([],Response::HTTP_NO_CONTENT);
     }
 }

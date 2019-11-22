@@ -33,7 +33,11 @@ class ContactsTest extends TestCase
         $response->assertJsonCount(1)
             ->assertJson([
                 'data' => [
-                    ['contact_id' => $contact->id]
+                    [
+                        'data' => [
+                            'contact_id' => $contact->id
+                        ]
+                    ]
                 ]
             ]);
 
@@ -65,7 +69,7 @@ class ContactsTest extends TestCase
                 'contact_id' => $contact->id
             ],
             'links' => [
-                'self' => url('/contacts/' . $contact->id)
+                'self' => $contact->path()
             ]
         ]);
     }
@@ -147,6 +151,17 @@ class ContactsTest extends TestCase
         $this->assertEquals('test@email.com', $contact->email);
         $this->assertEquals('03/22/1987', $contact->birthday->format('m/d/Y'));
         $this->assertEquals('ABC String', $contact->company);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'data' => [
+                'contact_id' => $contact->id
+            ],
+            'links' => [
+                'self' => $contact->path()
+            ]
+        ]);
+
     }
 
     /** @test */
@@ -166,6 +181,7 @@ class ContactsTest extends TestCase
         $response = $this->delete('/api/contacts/' . $contact->id, ['api_token' => $this->user->api_token]);
         $this->assertCount(0, Contact::all());
 
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
     }
 
     /** @test */
