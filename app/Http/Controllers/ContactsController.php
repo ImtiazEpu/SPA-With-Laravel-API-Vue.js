@@ -96,6 +96,6 @@ class ContactsController extends Controller
         $this->authorize('delete', $contact);
         $contact->delete();
 
-        return response([],Response::HTTP_NO_CONTENT);
+        return response([], Response::HTTP_NO_CONTENT);
     }
 }
