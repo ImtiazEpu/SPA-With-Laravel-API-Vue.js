@@ -1860,6 +1860,12 @@ module.exports = function isBuffer (obj) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -1927,7 +1933,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "App"
+  name: "App",
+  props: ['user'],
+  mounted: function mounted() {
+    var _this = this;
+
+    window.axios.interceptors.request.use(function (config) {
+      config.data = _objectSpread({}, config.data, {
+        api_token: _this.user.api_token
+      });
+      return config;
+    });
+  }
 });
 
 /***/ }),
@@ -2301,9 +2318,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "InputField",
-  props: ['name', 'label', 'placeholder']
+  props: ['name', 'label', 'placeholder'],
+  data: function data() {
+    return {
+      value: ''
+    };
+  },
+  methods: {
+    updateField: function updateField() {
+      this.$emit('update:field', this.value);
+    }
+  }
 });
 
 /***/ }),
@@ -2336,11 +2366,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ContactCreate",
   components: {
     InputField: _components_InputField__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      form: {
+        'name': '',
+        'email': '',
+        'phone': '',
+        'birthday': '',
+        'company': ''
+      }
+    };
+  },
+  methods: {
+    submitForm: function submitForm() {
+      axios.post('/api/contacts', this.form).then(function (response) {})["catch"](function (errors) {});
+    }
   }
 });
 
@@ -20721,9 +20769,31 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.value,
+          expression: "value"
+        }
+      ],
       staticClass:
         "pt-8 text-gray-900 w-full border-b pb-2 focus:outline-none focus:border-blue-400 xl:focus:placeholder-transparent",
-      attrs: { id: _vm.name, type: "text", placeholder: _vm.placeholder }
+      attrs: { id: _vm.name, type: "text", placeholder: _vm.placeholder },
+      domProps: { value: _vm.value },
+      on: {
+        input: [
+          function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.value = $event.target.value
+          },
+          function($event) {
+            return _vm.updateField()
+          }
+        ]
+      }
     })
   ])
 }
@@ -20752,12 +20822,25 @@ var render = function() {
   return _c("div", [
     _c(
       "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.submitForm($event)
+          }
+        }
+      },
       [
         _c("InputField", {
           attrs: {
             name: "name",
             label: "Contact Name",
             placeholder: "Full Name"
+          },
+          on: {
+            "update:field": function($event) {
+              _vm.form.name = $event
+            }
           }
         }),
         _vm._v(" "),
@@ -20766,6 +20849,11 @@ var render = function() {
             name: "email",
             label: "Contact Email",
             placeholder: "your@domain.com"
+          },
+          on: {
+            "update:field": function($event) {
+              _vm.form.email = $event
+            }
           }
         }),
         _vm._v(" "),
@@ -20774,6 +20862,11 @@ var render = function() {
             name: "phone",
             label: "Contact Phone",
             placeholder: "+880-xxx-xxx-xxxx"
+          },
+          on: {
+            "update:field": function($event) {
+              _vm.form.phone = $event
+            }
           }
         }),
         _vm._v(" "),
@@ -20782,11 +20875,21 @@ var render = function() {
             name: "birthday",
             label: "Birthday",
             placeholder: "MM/DD/YYYY"
+          },
+          on: {
+            "update:field": function($event) {
+              _vm.form.birthday = $event
+            }
           }
         }),
         _vm._v(" "),
         _c("InputField", {
-          attrs: { name: "company", label: "Company", placeholder: "Company" }
+          attrs: { name: "company", label: "Company", placeholder: "Company" },
+          on: {
+            "update:field": function($event) {
+              _vm.form.company = $event
+            }
+          }
         }),
         _vm._v(" "),
         _vm._m(0)

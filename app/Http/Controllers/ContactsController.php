@@ -20,14 +20,15 @@ class ContactsController extends Controller
     {
         return request()->validate([
             'name' => 'required',
-            'phone' => 'required',
             'email' => 'required|email',
+            'phone' => 'required',
             'birthday' => 'required',
             'company' => 'required',
         ]);
     }
 
     /**
+     *
      *
      * @throws AuthorizationException
      */

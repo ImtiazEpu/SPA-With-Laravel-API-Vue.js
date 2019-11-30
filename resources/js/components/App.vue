@@ -57,7 +57,7 @@
 
                 </div>
                 <div class="flex flex-col flex-1 overflow-y-hidden">
-                    <router-view class="p-6 overflow-x-hidden"></router-view>
+                    <router-view class="p-6 overflow-x-hidden"/>
                 </div>
             </div>
         </div>
@@ -66,7 +66,22 @@
 
 <script>
     export default {
-        name: "App"
+        name: "App",
+
+        props: [
+            'user'
+        ],
+        mounted() {
+            window.axios.interceptors.request.use(
+                (config) => {
+                    config.data = {
+                        ...config.data,
+                        api_token: this.user.api_token
+                    };
+                    return config;
+                }
+            )
+        }
     }
 </script>
 

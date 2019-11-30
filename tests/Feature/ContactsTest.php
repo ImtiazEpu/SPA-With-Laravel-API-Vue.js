@@ -59,8 +59,8 @@ class ContactsTest extends TestCase
         $contact = Contact::first();
 
         $this->assertEquals('Test Name', $contact->name);
-        $this->assertEquals('01616567207', $contact->phone);
         $this->assertEquals('test@email.com', $contact->email);
+        $this->assertEquals('01616567207', $contact->phone);
         $this->assertEquals('03/22/1987', $contact->birthday->format('m/d/Y'));
         $this->assertEquals('ABC String', $contact->company);
         $response->assertStatus(Response::HTTP_CREATED);
@@ -118,8 +118,8 @@ class ContactsTest extends TestCase
             'data' => [
                 'contact_id' => $contact->id,
                 'name' => $contact->name,
-                'phone' => $contact->phone,
                 'email' => $contact->email,
+                'phone' => $contact->phone,
                 'birthday' => $contact->birthday->format('m/d/Y'),
                 'company' => $contact->company,
                 'last_updated' => $contact->updated_at->diffForHumans()
@@ -147,8 +147,8 @@ class ContactsTest extends TestCase
         $contact = $contact->fresh();
 
         $this->assertEquals('Test Name', $contact->name);
-        $this->assertEquals('01616567207', $contact->phone);
         $this->assertEquals('test@email.com', $contact->email);
+        $this->assertEquals('01616567207', $contact->phone);
         $this->assertEquals('03/22/1987', $contact->birthday->format('m/d/Y'));
         $this->assertEquals('ABC String', $contact->company);
 
@@ -199,8 +199,8 @@ class ContactsTest extends TestCase
     {
         return [
             'name' => 'Test Name',
-            'phone' => '01616567207',
             'email' => 'test@email.com',
+            'phone' => '01616567207',
             'birthday' => '03/22/1987',
             'company' => 'ABC String',
             'api_token' => $this->user->api_token
